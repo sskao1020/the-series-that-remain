@@ -23,3 +23,10 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Save deployment package
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: dist
+          if-no-files-found: error
