@@ -1,0 +1,32 @@
+name: Build private preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "new-site/**"
+      - ".github/workflows/build-new-site.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: new-site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: new-site/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: node --test tests/editorial-model.test.mjs
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: private-preview-build
+          path: new-site/dist
+          if-no-files-found: error
