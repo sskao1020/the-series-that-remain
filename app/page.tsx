@@ -371,7 +371,16 @@ export default function Home() {
 <b>影評共識</b>
 <p>{externalReception[imageQueryByTitle[active.title]].critics}</p>
 </article>
-<small className="source-note">觀眾摘要避開重大劇情；影評共識聚焦表演、編劇、導演與製作技術。</small>
+{externalReception[imageQueryByTitle[active.title]].awards.some(award=>award.result!=="nominated")&&<article>
+<b>重大獎項</b>
+<ul className="award-list">{externalReception[imageQueryByTitle[active.title]].awards.filter(award=>award.result!=="nominated").slice(0,4).map((award,i)=>
+<li key={`${award.organization}-${award.year}-${i}`}>
+<time>{award.year}</time>
+<span>
+<strong>{award.organization}</strong>{award.category}{award.recipient&&<small>{award.recipient}</small>}</span>
+</li>)}</ul>
+</article>}
+<small className="source-note">觀眾摘要避開重大劇情；影評共識聚焦表演、編劇、導演與製作技術。重大獎項僅摘錄代表性紀錄，不呈現獲獎與入圍統計。</small>
 </section>}<button className={`primary save-primary ${saved.includes(active.title)?"is-saved":""}`} onClick={()=>toggleSaved(active)}>{saved.includes(active.title)?"✓ 已在我的片單 · 點擊移除":"＋ 留到我的片單"}</button>
 <div className="personal-note">
 <div>

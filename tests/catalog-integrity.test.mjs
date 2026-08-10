@@ -50,11 +50,13 @@ test("detail highlights come from each series profile", async () => {
   assert.match(page, /"Narcos":\[4,5,7\]/);
 });
 
-test("award records remain data-only", async () => {
+test("award totals remain data-only while major awards appear", async () => {
   const [page, css] = await Promise.all([
     readFile(pageUrl, "utf8"),
     readFile(cssUrl, "utf8"),
   ]);
-  assert.doesNotMatch(page, /獎項紀錄|獲獎／入圍/);
+  assert.match(page, /重大獎項/);
+  assert.doesNotMatch(page, /獎項紀錄|獲獎／入圍|awardTallies/);
+  assert.match(page, /award\.result!=="nominated"/);
   assert.doesNotMatch(css, /outside-voice>article:nth-of-type\(3\)/);
 });
