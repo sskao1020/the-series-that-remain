@@ -1,0 +1,50 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+const pageUrl = new URL("../app/page.tsx", import.meta.url);
+const cssUrl = new URL("../app/overrides.css", import.meta.url);
+
+test("all series use curated subgenres", async () => {
+  const page = await readFile(pageUrl, "utf8");
+  const genreBlock = page.slice(
+    page.indexOf("const genreByOriginal"),
+    page.indexOf("const moreTitles"),
+  );
+  const catalogEntries = [...genreBlock.matchAll(/"([^"]+)":"[^"]+"/g)];
+  const imageBlock = page.slice(
+    page.indexOf("const imageSearchNames"),
+    page.indexOf("const imageQueryByTitle"),
+  );
+  const firstFifty = [...imageBlock.matchAll(/"([^"]+)"/g)].map(match=>match[1]);
+  const extraBlock = page.slice(
+    page.indexOf("const extraShowSeeds"),
+    page.indexOf("const extraShows"),
+  );
+  const finalFifty = [...extraBlock.matchAll(/\["[^"]+","([^"]+)"/g)].map(match=>match[1]);
+  const catalogTitles = new Set(catalogEntries.map(match=>match[1]));
+
+  assert.equal(catalogEntries.length, 100);
+  assert.deepEqual([...new Set([...firstFifty,...finalFifty])].filter(title=>!catalogTitles.has(title)), []);
+  assert.match(genreBlock, /"Narcos":"犯罪／傳記"/);
+  assert.doesNotMatch(page, /genre:\["劇情","犯罪","喜劇"/);
+  assert.match(page, /genre:genreByOriginal\[x\[1\]\]/);
+});
+
+test("detail highlights come from each series profile", async () => {
+  const page = await readFile(pageUrl, "utf8");
+
+  assert.match(page, /topCriteriaFor\(active\)\.map/);
+  assert.doesNotMatch(page, /criteria\.slice\(0,3\)/);
+  assert.match(page, /"The Wire":\[0,1,7\]/);
+  assert.match(page, /"Breaking Bad":\[1,2,4\]/);
+});
+
+test("award records remain data-only", async () => {
+  const [page, css] = await Promise.all([
+    readFile(pageUrl, "utf8"),
+    readFile(cssUrl, "utf8"),
+  ]);
+  assert.doesNotMatch(page, /獎項紀錄|獲獎／入圍/);
+  assert.doesNotMatch(css, /outside-voice>article:nth-of-type\(3\)/);
+});

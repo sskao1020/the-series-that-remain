@@ -20,7 +20,13 @@ const featured: Show[] = [
   { title:"切爾諾貝利", original:"Chernobyl", year:2019, end:2019, genre:"迷你影集", platform:"HBO", score:90, seasons:"5 集", note:"災難最可怕之處，不只是輻射，而是制度要求每個人共同維持謊言。" },
 ];
 
-const moreTitles = ["雙峰","X檔案","白宮風雲","盾牌","迷失","辦公室","發展受阻","太空堡壘卡拉狄加","死亡禁忌","嗜血法醫","歡樂合唱團","唐頓莊園","權力遊戲","新聞編輯室","真探","左撇子","風騷律師","駭客軍團","紙牌屋","勁爆女子監獄","王冠","闇","善地","美麗心計","后翼棄兵","東城奇案","正常人","地下鐵道","我們這一天","波傑克馬男","黑鏡","浴血黑幫","毒梟","羅馬","太平洋戰爭","夜班經理","奧麗芙．基特里奇","難，置信"].map((title,i):Show=>({title,original:title,year:1990+(i*7)%31,end:2024-(i%8),genre:["劇情","犯罪","喜劇","科幻","迷你影集"][i%5],platform:["HBO","AMC","FX","Netflix","BBC"][i%5],score:89-(i%18),seasons:`${1+(i%6)} 季`,note:"這部作品以完整而清楚的創作觀點，留下超越播出年代的觀看價值。"}));
+const moreOriginals=["Twin Peaks","The X-Files","The West Wing","The Shield","Lost","The Office","Arrested Development","Battlestar Galactica","Deadwood","Dexter","Glee","Downton Abbey","Game of Thrones","The Newsroom","True Detective","The Leftovers","Better Call Saul","Mr. Robot","House of Cards","Orange Is the New Black","The Crown","Dark","The Good Place","Big Little Lies","The Queen's Gambit","Mare of Easttown","Normal People","The Underground Railroad","This Is Us","BoJack Horseman","Black Mirror","Peaky Blinders","Narcos","Rome","The Pacific","The Night Manager","Olive Kitteridge","Unbelievable"];
+const genreByOriginal:Record<string,string>={
+  "The Wire":"犯罪／社會","Six Feet Under":"家庭／劇情","Breaking Bad":"犯罪／驚悚","Mad Men":"時代／劇情","The Sopranos":"犯罪／家庭","Watchmen":"超級英雄／迷你影集","Succession":"家庭／商戰","Band of Brothers":"戰爭／迷你影集","The Americans":"諜報／劇情","Fargo":"犯罪／黑色喜劇","Fleabag":"喜劇／劇情","Chernobyl":"歷史／災難",
+  "Twin Peaks":"懸疑／超現實","The X-Files":"科幻／懸疑","The West Wing":"政治／劇情","The Shield":"犯罪／警匪","Lost":"科幻／懸疑","The Office":"職場／喜劇","Arrested Development":"家庭／喜劇","Battlestar Galactica":"科幻／政治","Deadwood":"西部／時代","Dexter":"犯罪／驚悚","Glee":"音樂／喜劇","Downton Abbey":"時代／家庭","Game of Thrones":"奇幻／史詩","The Newsroom":"職場／政治","True Detective":"犯罪／懸疑","The Leftovers":"超自然／劇情","Better Call Saul":"犯罪／法律","Mr. Robot":"科技／驚悚","House of Cards":"政治／驚悚","Orange Is the New Black":"監獄／喜劇劇情","The Crown":"傳記／時代","Dark":"科幻／懸疑","The Good Place":"哲學／喜劇","Big Little Lies":"家庭／懸疑","The Queen's Gambit":"成長／迷你影集","Mare of Easttown":"犯罪／懸疑","Normal People":"愛情／成長","The Underground Railroad":"歷史／迷你影集","This Is Us":"家庭／劇情","BoJack Horseman":"動畫／黑色喜劇","Black Mirror":"科幻／單元劇","Peaky Blinders":"犯罪／時代","Narcos":"犯罪／傳記","Rome":"歷史／史詩","The Pacific":"戰爭／迷你影集","The Night Manager":"諜報／迷你影集","Olive Kitteridge":"家庭／迷你影集","Unbelievable":"犯罪／迷你影集",
+  "The Fresh Prince of Bel-Air":"家庭／喜劇","Frasier":"情境喜劇","Friends":"情境喜劇","ER":"醫療／劇情","Buffy the Vampire Slayer":"奇幻／成長","Angel":"奇幻／偵探","Oz":"監獄／劇情","Sex and the City":"愛情／喜劇","The Larry Sanders Show":"職場／諷刺喜劇","Freaks and Geeks":"青春／喜劇劇情","The Good Wife":"法律／政治","Halt and Catch Fire":"科技／職場","Rectify":"家庭／劇情","Justified":"犯罪／西部","Boardwalk Empire":"犯罪／時代","Veep":"政治／諷刺喜劇","Silicon Valley":"科技／職場喜劇","Girls":"喜劇劇情／成長","Enlightened":"職場／喜劇劇情","Looking":"同志／生活劇情","The Deuce":"時代／社會","I May Destroy You":"創傷／迷你影集","It's a Sin":"同志／時代","Station Eleven":"末日／迷你影集","Dopesick":"醫療／社會","The Night Of":"犯罪／迷你影集","Sharp Objects":"心理／懸疑","When They See Us":"犯罪／歷史","Unorthodox":"成長／迷你影集","Godless":"西部／迷你影集","Maniac":"科幻／黑色喜劇","The Haunting of Hill House":"恐怖／家庭","The Fall":"犯罪／心理","Broadchurch":"犯罪／懸疑","Happy Valley":"犯罪／警匪","The Killing":"犯罪／懸疑","The Bridge":"犯罪／懸疑","Mr Inbetween":"犯罪／黑色喜劇","Atlanta":"喜劇劇情／超現實","Reservation Dogs":"青春／喜劇劇情","Barry":"犯罪／黑色喜劇","Better Things":"家庭／喜劇劇情","You're the Worst":"愛情／黑色喜劇","Crazy Ex-Girlfriend":"音樂／喜劇","Schitt's Creek":"家庭／喜劇","Parks and Recreation":"職場／喜劇","Community":"校園／後設喜劇","30 Rock":"職場／諷刺喜劇","Friday Night Lights":"運動／家庭","The Knick":"醫療／時代"
+};
+const moreTitles = ["雙峰","X檔案","白宮風雲","盾牌","迷失","辦公室","發展受阻","太空堡壘卡拉狄加","死亡禁忌","嗜血法醫","歡樂合唱團","唐頓莊園","權力遊戲","新聞編輯室","真探","左撇子","風騷律師","駭客軍團","紙牌屋","勁爆女子監獄","王冠","闇","善地","美麗心計","后翼棄兵","東城奇案","正常人","地下鐵道","我們這一天","波傑克馬男","黑鏡","浴血黑幫","毒梟","羅馬","太平洋戰爭","夜班經理","奧麗芙．基特里奇","難，置信"].map((title,i):Show=>({title,original:moreOriginals[i],year:1990+(i*7)%31,end:2024-(i%8),genre:genreByOriginal[moreOriginals[i]],platform:["HBO","AMC","FX","Netflix","BBC"][i%5],score:89-(i%18),seasons:`${1+(i%6)} 季`,note:"這部作品以完整而清楚的創作觀點，留下超越播出年代的觀看價值。"}));
 const extraShowSeeds:[string,string,string,string,number,number][]=[
   ["新鮮王子妙事多","The Fresh Prince of Bel-Air","喜劇","NBC",1990,1996],["歡樂一家親","Frasier","喜劇","NBC",1993,2004],["六人行","Friends","喜劇","NBC",1994,2004],["急診室的春天","ER","劇情","NBC",1994,2009],["魔法奇兵","Buffy the Vampire Slayer","劇情","The WB",1997,2003],
   ["夜行天使","Angel","劇情","The WB",1999,2004],["監獄風雲","Oz","犯罪","HBO",1997,2003],["慾望城市","Sex and the City","喜劇","HBO",1998,2004],["賴瑞桑德斯秀","The Larry Sanders Show","喜劇","HBO",1992,1998],["怪胎與書呆","Freaks and Geeks","喜劇","NBC",1999,2000],
@@ -33,11 +39,22 @@ const extraShowSeeds:[string,string,string,string,number,number][]=[
   ["殺手進城","Barry","喜劇","HBO",2018,2023],["更美好的事","Better Things","喜劇","FX",2016,2022],["我愛上的人是奇葩","You're the Worst","喜劇","FX",2014,2019],["瘋狂前女友","Crazy Ex-Girlfriend","喜劇","The CW",2015,2019],["富家窮路","Schitt's Creek","喜劇","CBC",2015,2020],
   ["公園與遊憩","Parks and Recreation","喜劇","NBC",2009,2015],["廢柴聯盟","Community","喜劇","NBC",2009,2015],["超級製作人","30 Rock","喜劇","NBC",2006,2013],["勝利之光","Friday Night Lights","劇情","NBC",2006,2011],["紐約醫情","The Knick","劇情","Cinemax",2014,2015]
 ];
-const extraShows=extraShowSeeds.map((x,i):Show=>({title:x[0],original:x[1],genre:x[2],platform:x[3],year:x[4],end:x[5],score:90-(i%14),seasons:x[2]==="迷你影集"?"迷你影集":`${1+(i%7)} 季`,note:"一部在角色、時代與敘事選擇之間留下獨特位置的完成之作。"}));
-const shows = [...featured, ...moreTitles, ...extraShows];
+const extraShows=extraShowSeeds.map((x,i):Show=>({title:x[0],original:x[1],genre:genreByOriginal[x[1]],platform:x[3],year:x[4],end:x[5],score:90-(i%14),seasons:x[2]==="迷你影集"?"迷你影集":`${1+(i%7)} 季`,note:"一部在角色、時代與敘事選擇之間留下獨特位置的完成之作。"}));
+const shows = [...featured, ...moreTitles, ...extraShows].map(show=>({...show,genre:genreByOriginal[show.original]??show.genre}));
 const imageSearchNames = ["The Wire","Six Feet Under","Breaking Bad","Mad Men","The Sopranos","Watchmen","Succession","Band of Brothers","The Americans","Fargo","Fleabag","Chernobyl","Twin Peaks","The X-Files","The West Wing","The Shield","Lost","The Office","Arrested Development","Battlestar Galactica","Deadwood","Dexter","Glee","Downton Abbey","Game of Thrones","The Newsroom","True Detective","The Leftovers","Better Call Saul","Mr. Robot","House of Cards","Orange Is the New Black","The Crown","Dark","The Good Place","Big Little Lies","The Queen's Gambit","Mare of Easttown","Normal People","The Underground Railroad","This Is Us","BoJack Horseman","Black Mirror","Peaky Blinders","Narcos","Rome","The Pacific","The Night Manager","Olive Kitteridge","Unbelievable",...extraShows.map(s=>s.original)];
 const imageQueryByTitle=Object.fromEntries(shows.map((show,index)=>[show.title,imageSearchNames[index]]));
 const criteria = ["跨世代命題","劇本與人物","完整度／收尾","創新與影響力","製作品質","娛樂性／可看性","重看價值","時間驗證","外部評價","獎項肯定"];
+const criterionProfiles:Record<string,number[]>={
+  "喜劇":[5,6,1],"情境喜劇":[5,6,1],"黑色喜劇":[1,5,3],"諷刺喜劇":[3,1,5],"犯罪":[1,2,4],"懸疑":[1,5,2],"科幻":[3,0,4],"奇幻":[4,1,5],"家庭":[1,0,6],"歷史":[4,7,0],"時代":[4,1,7],"戰爭":[4,1,0],"政治":[1,3,0],"職場":[1,5,6],"醫療":[1,4,0],"愛情":[1,6,0],"青春":[1,6,5],"成長":[1,0,6],"西部":[4,1,7],"恐怖":[4,1,5],"心理":[1,4,0],"超現實":[3,6,0],"動畫":[3,1,6],"傳記":[1,4,7],"諜報":[1,2,5],"法律":[1,2,0],"監獄":[1,0,4],"運動":[1,0,5],"音樂":[4,5,1],"超自然":[0,1,6],"末日":[0,4,6],"哲學":[0,1,5],"科技":[3,4,1],"超級英雄":[3,0,4],"災難":[4,2,0],"社會":[0,1,7],"同志":[1,0,6],"創傷":[1,0,2],"偵探":[1,5,4],"校園":[5,6,3]
+};
+const strengthOverrides:Record<string,number[]>={
+  "The Wire":[0,1,7],"Six Feet Under":[0,1,6],"Breaking Bad":[1,2,4],"Mad Men":[1,0,6],"The Sopranos":[3,1,0],"Watchmen":[3,0,4],"Succession":[1,4,2],"Band of Brothers":[4,1,0],"The Americans":[1,2,6],"Fargo":[4,1,5],"Fleabag":[1,5,3],"Chernobyl":[4,2,0],"Twin Peaks":[3,6,0],"The X-Files":[3,0,7],"The West Wing":[1,5,4],"The Shield":[1,2,5],"Lost":[3,5,4],"The Office":[5,6,1],"Arrested Development":[1,5,6],"Battlestar Galactica":[0,1,3],"BoJack Horseman":[1,0,6],"Black Mirror":[0,3,6],"The Good Place":[0,1,2],"Dark":[2,1,4],"Better Call Saul":[1,4,2],"Mr. Robot":[4,3,1]
+};
+const topCriteriaFor=(show:Show)=>{
+  const primary=show.genre.split("／")[0];
+  const indices=strengthOverrides[show.original]??criterionProfiles[primary]??[1,4,6];
+  return indices.map((criterionIndex,rank)=>({name:criteria[criterionIndex],score:Math.min(100,show.score+2-rank*3)}));
+};
 
 export default function Home() {
   const [genre,setGenre]=useState("全部"); const [sort,setSort]=useState("契合度"); const [weights,setWeights]=useState(criteria.map(()=>10));
@@ -61,20 +78,343 @@ export default function Home() {
   const toggleSaved=(s:Show)=>{const isSaved=saved.includes(s.title);setSaved(list=>isSaved?list.filter(title=>title!==s.title):[...list,s.title]);setToast(isSaved?`已從片單移除 ${imageQueryByTitle[s.title]}`:`已加入片單：${imageQueryByTitle[s.title]}`);window.setTimeout(()=>setToast(""),1800)};
   const updateNote=(title:string,value:string)=>{const next={...notes,[title]:value};setNotes(next);try{window.localStorage.setItem("series-notes",JSON.stringify(next))}catch{}}
   return <main className="app-shell" data-quiz-complete={answers.length>0&&Boolean(mood)}>
-    <aside className="sidebar"><a className="brand" href="#">時間留下的影集<span>THE SERIES THAT REMAIN</span></a><div className="side-nav">{["探索","排行榜","我的片單","評分方法"].map(x=><button key={x} className={view===x?"active":""} onClick={()=>setView(x)}><i>{x==="探索"?"◌":x==="排行榜"?"≡":x==="我的片單"?"◇":"?"}</i>{x}</button>)}</div><div className="side-note"><span>你的觀看傾向</span><b>{answers.length?"思想考掘型":"尚未建立"}</b>{mood&&<small className="mood-context">今晚：{mood}</small>}<div className="side-note-actions">{mood&&<button onClick={()=>{setQuizPhase("mood");setQuizOpen(true)}}>調整今晚心情</button>}<button onClick={()=>{setQuiz(0);setAnswers([]);setMood("");setQuizPhase("taste");setQuizOpen(true)}}>{answers.length?"重新探索":"開始探索"}</button></div></div></aside>
-    <div className="workspace"><header className="dash-top"><div><small>1990—PRESENT · 100 部已完結作品</small><h1>{view}</h1></div><div className="search">搜尋 100 部作品　⌕</div></header>
-    {view==="探索"&&<><section className="welcome"><div><span>{answers.length?"你的觀看人格":"從你的觀看方式開始"}</span><h2>{answers.length?<>思想考掘型，<br/>但今晚可以不一樣。</>:<>故事結束之後，<br/>什麼仍留在你身上？</>}</h2><p>{answers.length?`你長期偏愛有思想餘韻的作品${mood?`；今晚想要「${mood}」`:"。再告訴我們今晚的心情，推薦會更貼近此刻"}。`:"我們只談已經說完的故事。先認識你的觀看方式，再從時間留下的作品裡，找出真正適合你的那一部。"}</p><div className="explore-actions"><button className="primary" onClick={()=>{if(answers.length)setQuizPhase("mood");setQuizOpen(true)}}>{answers.length?"換一種今晚心情":"開始探索"}　→</button>{answers.length>0&&<button className="restart-explore" onClick={restartExplore}>重新探索　↻</button>}</div></div><div className="feature-score"><small>今晚最適合你</small><h3>{answers.length?(mood==="想笑一笑"?"Fleabag":"Six Feet Under"):"The Wire"}</h3><p>{answers.length?(mood==="想笑一笑"?"倫敦生活":"六呎風雲"):"火線重案組 · 2002—2008"}</p><div className="hero-score-pair"><span><b>{answers.length?"92":"98"}%</b>契合度</span><span><b>{answers.length?(mood==="想笑一笑"?featured[10].score:featured[1].score):featured[0].score}</b>作品評分</span></div></div></section><section className="stats"><div><span>收錄作品</span><b>{shows.length}</b><small>都是已經完結的劇集</small></div><button className="stat-link" onClick={()=>setView("我的片單")}><span>你的片單</span><b>{saved.length}</b><small>看看你為下一個夜晚留下的片單　→</small></button><div><span>今晚情境</span><b className="mood-stat">{mood||"尚未選擇"}</b><small>{mood?"心情變了，也可以重新選擇":"完成探索後，推薦會更貼近此刻"}</small></div></section><section className="rec"><div className="panel-title"><div><small>為你而選 · {mood||"依長期品味"}</small><h2>時間沖刷不去的三部作品</h2></div><button onClick={()=>setView("排行榜")}>看看更多可能 →</button></div><div className="compact-grid three">{(mood==="想笑一笑"?[featured[10],featured[6],featured[1]]:mood==="想被安慰"?[featured[1],featured[10],featured[7]]:featured.slice(0,3)).map((s,i)=><article key={s.title} onClick={()=>setActive(s)}><div className="mini-cover" style={posters[s.title]?{backgroundImage:`linear-gradient(180deg,transparent,rgba(31,48,42,.7)),url(${posters[s.title]})`}:undefined}><span>0{i+1}</span><div className="cover-scores"><b>{personalScore(s)}%</b><small>契合度</small></div></div><div className="card-meta"><small>{s.genre} · {s.platform}</small><span>作品評分 {s.score}</span></div><h3>{imageQueryByTitle[s.title]}</h3><em>{s.title}</em><p>{s.note}</p><div className="match-reason">{i===0?"最符合你現在想看的心情":i===1?"同樣重視人物，情緒更內斂":"同樣有深度，節奏更緊湊"}</div></article>)}</div></section></>}
-    {view==="排行榜"&&<section className="ranking"><div className="section-title"><div><span>FOR YOU · 100</span><h2>為你排序</h2><p>依「{answers.length?"思想考掘型":"尚未建立的品味"}」{mood&&<>與今晚「{mood}」</>}排列。契合度回答現在適不適合你；作品評分則回答它是否經得起時間。</p><div className="ranking-context"><span>觀看傾向：{answers.length?"思想考掘型":"尚未建立"}</span><span>今晚：{mood||"尚未選擇"}</span></div></div><button className="outline" onClick={()=>setWeightsOpen(!weightsOpen)}>微調我的品味</button></div>
-      {weightsOpen&&<div className="preference-panel"><div className="preference-head"><div><h3>看影集時，你最在意什麼？</h3><p>憑直覺選就好。沒有標準答案，也可以隨時回來改變心意。</p></div><button onClick={()=>setAdvancedOpen(!advancedOpen)}>{advancedOpen?"簡單一點":"看看我們怎麼選"}</button></div><div className="preference-groups">{groupData.map((g,i)=><article key={g.name}><small>0{i+1}</small><h4>{g.name}</h4><p>{g.note}</p><div>{prefWords.map((word,n)=><button key={word} className={groupPrefs[i]===n+1?"active":""} onClick={()=>setGroupPrefs(v=>v.map((x,j)=>j===i?n+1:x))}>{word}</button>)}</div></article>)}</div>{advancedOpen&&<div className="advanced"><span>這份名單還參考了十個面向</span><p>{criteria.map((c,i)=><i key={c}>{c}<b>{weights[i]}%</b></i>)}</p><small>數字只是幫助我們保持一致；真正重要的，仍然是每部作品留下了什麼。</small></div>}</div>}
-      <div className="tools"><div id="genres">{["全部","劇情","犯罪","喜劇","科幻","迷你影集"].map(g=><button className={genre===g?"active":""} onClick={()=>setGenre(g)} key={g}>{g}</button>)}</div><label>排序：<select value={sort} onChange={e=>setSort(e.target.value)}><option>契合度</option><option>作品評分</option><option>年份</option><option>平台</option></select></label></div>
-      <div className="cards">{list.slice(0,showAll?list.length:12).map((s,i)=><article key={s.title} onClick={()=>setActive(s)}><div className="poster" style={posters[s.title]?{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(20,32,28,.88)),url(${posters[s.title]})`}:undefined}><span>{String(i+1).padStart(2,"0")}</span><div className="poster-score"><b>{personalScore(s)}%</b><small>契合度</small></div></div><div className="card-copy"><div className="card-meta"><small>{s.genre} · {s.platform} · {s.year}—{s.end}</small><span>作品評分 {s.score}</span></div><h3>{imageQueryByTitle[s.title]}</h3><em>{s.title}</em><p>{s.note}</p><div className="card-actions"><button className={saved.includes(s.title)?"saved-action":""} onClick={e=>{e.stopPropagation();toggleSaved(s)}}>{saved.includes(s.title)?"✓ 已在片單":"＋ 加入片單"}</button><button onClick={e=>{e.stopPropagation();toggleCompare(s)}}>{compare.some(x=>x.title===s.title)?"✓ 比較中":"⇄ 比較"}</button></div></div></article>)}</div><button className="more" onClick={()=>setShowAll(!showAll)}>{showAll?"收起作品":"瀏覽全部 " + list.length + " 部作品"}</button>
+    <aside className="sidebar">
+<a className="brand" href="#">時間留下的影集<span>THE SERIES THAT REMAIN</span>
+</a>
+<div className="side-nav">{["探索","排行榜","我的片單","評分方法"].map(x=>
+<button key={x} className={view===x?"active":""} onClick={()=>setView(x)}>
+<i>{x==="探索"?"◌":x==="排行榜"?"≡":x==="我的片單"?"◇":"?"}</i>{x}</button>)}</div>
+<div className="side-note">
+<span>你的觀看傾向</span>
+<b>{answers.length?"思想考掘型":"尚未建立"}</b>{mood&&<small className="mood-context">今晚：{mood}</small>}<div className="side-note-actions">{mood&&<button onClick={()=>{setQuizPhase("mood");setQuizOpen(true)}}>調整今晚心情</button>}<button onClick={()=>{setQuiz(0);setAnswers([]);setMood("");setQuizPhase("taste");setQuizOpen(true)}}>{answers.length?"重新探索":"開始探索"}</button>
+</div>
+</div>
+</aside>
+    <div className="workspace">
+<header className="dash-top">
+<div>
+<small>1990—PRESENT · 100 部已完結作品</small>
+<h1>{view}</h1>
+</div>
+<div className="search">搜尋 100 部作品　⌕</div>
+</header>
+    {view==="探索"&&<>
+<section className="welcome">
+<div>
+<span>{answers.length?"你的觀看人格":"從你的觀看方式開始"}</span>
+<h2>{answers.length?<>思想考掘型，<br/>但今晚可以不一樣。</>:<>故事結束之後，<br/>什麼仍留在你身上？</>}</h2>
+<p>{answers.length?`你長期偏愛有思想餘韻的作品${mood?`；今晚想要「${mood}」`:"。再告訴我們今晚的心情，推薦會更貼近此刻"}。`:"我們只談已經說完的故事。先認識你的觀看方式，再從時間留下的作品裡，找出真正適合你的那一部。"}</p>
+<div className="explore-actions">
+<button className="primary" onClick={()=>{if(answers.length)setQuizPhase("mood");setQuizOpen(true)}}>{answers.length?"換一種今晚心情":"開始探索"}　→</button>{answers.length>0&&<button className="restart-explore" onClick={restartExplore}>重新探索　↻</button>}</div>
+</div>
+<div className="feature-score">
+<small>今晚最適合你</small>
+<h3>{answers.length?(mood==="想笑一笑"?"Fleabag":"Six Feet Under"):"The Wire"}</h3>
+<p>{answers.length?(mood==="想笑一笑"?"倫敦生活":"六呎風雲"):"火線重案組 · 2002—2008"}</p>
+<div className="hero-score-pair">
+<span>
+<b>{answers.length?"92":"98"}%</b>契合度</span>
+<span>
+<b>{answers.length?(mood==="想笑一笑"?featured[10].score:featured[1].score):featured[0].score}</b>作品評分</span>
+</div>
+</div>
+</section>
+<section className="stats">
+<div>
+<span>收錄作品</span>
+<b>{shows.length}</b>
+<small>都是已經完結的劇集</small>
+</div>
+<button className="stat-link" onClick={()=>setView("我的片單")}>
+<span>你的片單</span>
+<b>{saved.length}</b>
+<small>看看你為下一個夜晚留下的片單　→</small>
+</button>
+<div>
+<span>今晚情境</span>
+<b className="mood-stat">{mood||"尚未選擇"}</b>
+<small>{mood?"心情變了，也可以重新選擇":"完成探索後，推薦會更貼近此刻"}</small>
+</div>
+</section>
+<section className="rec">
+<div className="panel-title">
+<div>
+<small>為你而選 · {mood||"依長期品味"}</small>
+<h2>時間沖刷不去的三部作品</h2>
+</div>
+<button onClick={()=>setView("排行榜")}>看看更多可能 →</button>
+</div>
+<div className="compact-grid three">{(mood==="想笑一笑"?[featured[10],featured[6],featured[1]]:mood==="想被安慰"?[featured[1],featured[10],featured[7]]:featured.slice(0,3)).map((s,i)=>
+<article key={s.title} onClick={()=>setActive(s)}>
+<div className="mini-cover" style={posters[s.title]?{backgroundImage:`linear-gradient(180deg,transparent,rgba(31,48,42,.7)),url(${posters[s.title]})`}:undefined}>
+<span>0{i+1}</span>
+<div className="cover-scores">
+<b>{personalScore(s)}%</b>
+<small>契合度</small>
+</div>
+</div>
+<div className="card-meta">
+<small>{s.genre} · {s.platform}</small>
+<span>作品評分 {s.score}</span>
+</div>
+<h3>{imageQueryByTitle[s.title]}</h3>
+<em>{s.title}</em>
+<p>{s.note}</p>
+<div className="match-reason">{i===0?"最符合你現在想看的心情":i===1?"同樣重視人物，情緒更內斂":"同樣有深度，節奏更緊湊"}</div>
+</article>)}</div>
+</section>
+</>}
+    {view==="排行榜"&&<section className="ranking">
+<div className="section-title">
+<div>
+<span>FOR YOU · 100</span>
+<h2>為你排序</h2>
+<p>依「{answers.length?"思想考掘型":"尚未建立的品味"}」{mood&&<>與今晚「{mood}」</>}排列。契合度回答現在適不適合你；作品評分則回答它是否經得起時間。</p>
+<div className="ranking-context">
+<span>觀看傾向：{answers.length?"思想考掘型":"尚未建立"}</span>
+<span>今晚：{mood||"尚未選擇"}</span>
+</div>
+</div>
+<button className="outline" onClick={()=>setWeightsOpen(!weightsOpen)}>微調我的品味</button>
+</div>
+      {weightsOpen&&<div className="preference-panel">
+<div className="preference-head">
+<div>
+<h3>看影集時，你最在意什麼？</h3>
+<p>憑直覺選就好。沒有標準答案，也可以隨時回來改變心意。</p>
+</div>
+<button onClick={()=>setAdvancedOpen(!advancedOpen)}>{advancedOpen?"簡單一點":"看看我們怎麼選"}</button>
+</div>
+<div className="preference-groups">{groupData.map((g,i)=>
+<article key={g.name}>
+<small>0{i+1}</small>
+<h4>{g.name}</h4>
+<p>{g.note}</p>
+<div>{prefWords.map((word,n)=>
+<button key={word} className={groupPrefs[i]===n+1?"active":""} onClick={()=>setGroupPrefs(v=>v.map((x,j)=>j===i?n+1:x))}>{word}</button>)}</div>
+</article>)}</div>{advancedOpen&&<div className="advanced">
+<span>這份名單還參考了十個面向</span>
+<p>{criteria.map((c,i)=>
+<i key={c}>{c}<b>{weights[i]}%</b>
+</i>)}</p>
+<small>數字只是幫助我們保持一致；真正重要的，仍然是每部作品留下了什麼。</small>
+</div>}</div>}
+      <div className="tools">
+<div id="genres">{["全部","劇情","犯罪","喜劇","科幻","迷你影集"].map(g=>
+<button className={genre===g?"active":""} onClick={()=>setGenre(g)} key={g}>{g}</button>)}</div>
+<label>排序：<select value={sort} onChange={e=>setSort(e.target.value)}>
+<option>契合度</option>
+<option>作品評分</option>
+<option>年份</option>
+<option>平台</option>
+</select>
+</label>
+</div>
+      <div className="cards">{list.slice(0,showAll?list.length:12).map((s,i)=>
+<article key={s.title} onClick={()=>setActive(s)}>
+<div className="poster" style={posters[s.title]?{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(20,32,28,.88)),url(${posters[s.title]})`}:undefined}>
+<span>{String(i+1).padStart(2,"0")}</span>
+<div className="poster-score">
+<b>{personalScore(s)}%</b>
+<small>契合度</small>
+</div>
+</div>
+<div className="card-copy">
+<div className="card-meta">
+<small>{s.genre} · {s.platform} · {s.year}—{s.end}</small>
+<span>作品評分 {s.score}</span>
+</div>
+<h3>{imageQueryByTitle[s.title]}</h3>
+<em>{s.title}</em>
+<p>{s.note}</p>
+<div className="card-actions">
+<button className={saved.includes(s.title)?"saved-action":""} onClick={e=>{e.stopPropagation();toggleSaved(s)}}>{saved.includes(s.title)?"✓ 已在片單":"＋ 加入片單"}</button>
+<button onClick={e=>{e.stopPropagation();toggleCompare(s)}}>{compare.some(x=>x.title===s.title)?"✓ 比較中":"⇄ 比較"}</button>
+</div>
+</div>
+</article>)}</div>
+<button className="more" onClick={()=>setShowAll(!showAll)}>{showAll?"收起作品":"瀏覽全部 " + list.length + " 部作品"}</button>
     </section>}
-    {view==="我的片單"&&<section className="ranking"><div className="section-title"><div><span>MY LIST</span><h2>留給下一個晚上的故事</h2><p>收藏那些讓你有點心動、但還沒準備好立刻開始的作品。</p><div className="ranking-context"><span>觀看傾向：{answers.length?"思想考掘型":"尚未建立"}</span><span>今晚：{mood||"尚未選擇"}</span></div></div></div><div className="cards">{shows.filter(s=>saved.includes(s.title)).map(s=><article key={s.title} onClick={()=>setActive(s)}><div className="poster" style={posters[s.title]?{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(20,32,28,.88)),url(${posters[s.title]})`}:undefined}><div className="poster-score"><b>{personalScore(s)}%</b><small>契合度</small></div></div><div className="card-copy"><div className="card-meta"><small>{s.genre} · {s.platform}</small><span>作品評分 {s.score}</span></div><h3>{imageQueryByTitle[s.title]}</h3><em>{s.title}</em><p>{notes[s.title]?`「${notes[s.title]}」`:s.note}</p></div></article>)}</div></section>}
-    {view==="評分方法"&&<section className="method method-deep"><div className="method-intro"><span>HOW WE READ</span><h2>我們不評哪部最好，<br/>而是哪部仍值得被重看。</h2><p>熱度會消退，技術會過時，觀眾也會改變。真正留下來的作品，往往不是毫無缺點，而是在多年之後，仍能讓人重新理解角色、時代，甚至自己。</p></div><div className="method-principles"><article><b>01</b><h3>結局也是作品的一部分</h3><p>我們只收錄已完結影集。因為一個故事如何承擔它曾經許下的承諾，必須等到最後一幕才能判斷。</p></article><article><b>02</b><h3>影響力不等於今天仍好看</h3><p>開創先例值得被記住，但歷史地位不能代替觀看經驗。我們同時追問：它曾經改變什麼？現在還能帶來什麼？</p></article><article><b>03</b><h3>缺點不會被平均掉</h3><p>有些缺陷會動搖整部作品，有些反而來自它的野心。分數不是把優缺點相加，而是判斷它們如何共同構成作品。</p></article></div><div className="evidence"><div><span>我們能確認的事</span><h3>事實層</h3><p>播出年份、完結狀態、評論趨勢、獎項、創作者影響，以及作品在後來影集中的可見痕跡。</p></div><div><span>我們必須承認的事</span><h3>判斷層</h3><p>人物是否成立、命題是否深刻、結局是否誠實、重看是否長出新意。這些無法假裝客觀，因此每一項都必須留下理由。</p></div></div><div className="criteria-block"><div><span>THE TEN LENSES</span><h3>十個觀看角度，不是十條真理。</h3><p>它們讓不同作品能被放在同一張桌上討論，也提醒我們：製作精良、令人上癮與真正重要，從來不是同一件事。</p></div><ol>{criteria.map((c,i)=><li key={c}><b>{String(i+1).padStart(2,"0")}</b><span>{c}</span></li>)}</ol></div><figure className="spirit-quote"><blockquote>“The great movies enlarge us, they civilize us, they make us more decent people.”</blockquote><p>偉大的作品拓展我們的生命經驗，也讓我們成為更理解他人的人。</p><figcaption>— Roger Ebert，<a href="https://www.rogerebert.com/roger-ebert/eberts-walk-of-fame-remarks" target="_blank" rel="noreferrer">Hollywood Walk of Fame Remarks</a>，2005</figcaption></figure></section>}
+    {view==="我的片單"&&<section className="ranking">
+<div className="section-title">
+<div>
+<span>MY LIST</span>
+<h2>留給下一個晚上的故事</h2>
+<p>收藏那些讓你有點心動、但還沒準備好立刻開始的作品。</p>
+<div className="ranking-context">
+<span>觀看傾向：{answers.length?"思想考掘型":"尚未建立"}</span>
+<span>今晚：{mood||"尚未選擇"}</span>
+</div>
+</div>
+</div>
+<div className="cards">{shows.filter(s=>saved.includes(s.title)).map(s=>
+<article key={s.title} onClick={()=>setActive(s)}>
+<div className="poster" style={posters[s.title]?{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(20,32,28,.88)),url(${posters[s.title]})`}:undefined}>
+<div className="poster-score">
+<b>{personalScore(s)}%</b>
+<small>契合度</small>
+</div>
+</div>
+<div className="card-copy">
+<div className="card-meta">
+<small>{s.genre} · {s.platform}</small>
+<span>作品評分 {s.score}</span>
+</div>
+<h3>{imageQueryByTitle[s.title]}</h3>
+<em>{s.title}</em>
+<p>{notes[s.title]?`「${notes[s.title]}」`:s.note}</p>
+</div>
+</article>)}</div>
+</section>}
+    {view==="評分方法"&&<section className="method method-deep">
+<div className="method-intro">
+<span>HOW WE READ</span>
+<h2>我們不評哪部最好，<br/>而是哪部仍值得被重看。</h2>
+<p>熱度會消退，技術會過時，觀眾也會改變。真正留下來的作品，往往不是毫無缺點，而是在多年之後，仍能讓人重新理解角色、時代，甚至自己。</p>
+</div>
+<div className="method-principles">
+<article>
+<b>01</b>
+<h3>結局也是作品的一部分</h3>
+<p>我們只收錄已完結影集。因為一個故事如何承擔它曾經許下的承諾，必須等到最後一幕才能判斷。</p>
+</article>
+<article>
+<b>02</b>
+<h3>影響力不等於今天仍好看</h3>
+<p>開創先例值得被記住，但歷史地位不能代替觀看經驗。我們同時追問：它曾經改變什麼？現在還能帶來什麼？</p>
+</article>
+<article>
+<b>03</b>
+<h3>缺點不會被平均掉</h3>
+<p>有些缺陷會動搖整部作品，有些反而來自它的野心。分數不是把優缺點相加，而是判斷它們如何共同構成作品。</p>
+</article>
+</div>
+<div className="evidence">
+<div>
+<span>我們能確認的事</span>
+<h3>事實層</h3>
+<p>播出年份、完結狀態、評論趨勢、獎項、創作者影響，以及作品在後來影集中的可見痕跡。</p>
+</div>
+<div>
+<span>我們必須承認的事</span>
+<h3>判斷層</h3>
+<p>人物是否成立、命題是否深刻、結局是否誠實、重看是否長出新意。這些無法假裝客觀，因此每一項都必須留下理由。</p>
+</div>
+</div>
+<div className="criteria-block">
+<div>
+<span>THE TEN LENSES</span>
+<h3>十個觀看角度，不是十條真理。</h3>
+<p>它們讓不同作品能被放在同一張桌上討論，也提醒我們：製作精良、令人上癮與真正重要，從來不是同一件事。</p>
+</div>
+<ol>{criteria.map((c,i)=>
+<li key={c}>
+<b>{String(i+1).padStart(2,"0")}</b>
+<span>{c}</span>
+</li>)}</ol>
+</div>
+<figure className="spirit-quote">
+<blockquote>“The great movies enlarge us, they civilize us, they make us more decent people.”</blockquote>
+<p>偉大的作品拓展我們的生命經驗，也讓我們成為更理解他人的人。</p>
+<figcaption>— Roger Ebert，<a href="https://www.rogerebert.com/roger-ebert/eberts-walk-of-fame-remarks" target="_blank" rel="noreferrer">Hollywood Walk of Fame Remarks</a>，2005</figcaption>
+</figure>
+</section>}
     </div>
 
-    {compare.length>0&&<div className="comparebar"><span>比較作品（{compare.length}/3）</span>{compare.map(s=><button key={s.title} onClick={()=>toggleCompare(s)}>{imageQueryByTitle[s.title]} <small>{s.title}</small> ×</button>)}<button className="go" onClick={()=>setActive(compare[0])}>放在一起看看 →</button></div>}
-    {active&&<div className="modal" onClick={()=>setActive(null)}><article className="detail" onClick={e=>e.stopPropagation()}><button className="close" onClick={()=>setActive(null)}>×</button>{posters[active.title]&&<div className="full-poster" style={{backgroundImage:`url(${posters[active.title]})`}}/>}<div className="detail-copy"><small>{active.genre} · {active.platform} · {active.seasons}</small><h2>{imageQueryByTitle[active.title]}</h2><em>{active.title} · {active.year}—{active.end}</em><div className="detail-scores"><div><b>{personalScore(active)}%</b><span>與你的契合度</span><small>依觀看品味與今晚心情</small></div><div><b>{active.score}</b><span>作品評分</span><small>依十個觀看角度綜合判斷</small></div></div><h3>它為什麼值得留下？</h3><p>{active.note}</p><div className="score-summary"><b>本作最突出的三個面向</b><small>完整作品評分由十個觀看角度綜合而成；以下摘錄得分最高的三項。</small></div><div className="scorelines">{criteria.slice(0,3).map((c,i)=><label key={c}>{c}<span><i style={{width:`${active.score-i*2}%`}}/></span><b>{active.score-i*2}</b></label>)}</div>{externalReception[imageQueryByTitle[active.title]]&&<section className="outside-voice"><div className="outside-head"><small>RECEPTION &amp; LEGACY</small><h3>外界如何記得它</h3><p>不同資料代表不同觀點，不合併成另一個分數。</p></div><article><b>觀眾反應</b><p>{externalReception[imageQueryByTitle[active.title]].audience}</p><div><a href={externalReception[imageQueryByTitle[active.title]].imdb} target="_blank" rel="noreferrer">IMDb 觀眾評論 ↗</a><a href={externalReception[imageQueryByTitle[active.title]].reddit} target="_blank" rel="noreferrer">Reddit 討論 ↗</a></div></article><article><b>影評共識</b><p>{externalReception[imageQueryByTitle[active.title]].critics}</p></article><article><b>獎項紀錄</b>{externalReception[imageQueryByTitle[active.title]].awardTallies?.length&&<div className="award-tallies">{externalReception[imageQueryByTitle[active.title]].awardTallies?.map(tally=><span key={tally.organization}><strong>{tally.organization}</strong><b>{tally.wins}／{tally.nominations}</b><small>獲獎／入圍</small></span>)}</div>}<ul className="award-list">{externalReception[imageQueryByTitle[active.title]].awards.filter(award=>award.result!=="nominated").slice(0,4).map((award,i)=><li key={`${award.organization}-${award.year}-${i}`}><time>{award.year}</time><span><strong>{award.organization}</strong>{award.category}{award.recipient&&<small>{award.recipient}</small>}</span></li>)}</ul></article><small className="source-note">觀眾摘要不含重大劇情；影評聚焦創作技術。獎項只列實際獲獎，不把入圍計為得獎。</small></section>}<button className={`primary save-primary ${saved.includes(active.title)?"is-saved":""}`} onClick={()=>toggleSaved(active)}>{saved.includes(active.title)?"✓ 已在我的片單 · 點擊移除":"＋ 留到我的片單"}</button><div className="personal-note"><div><h3>留一句話給自己</h3><small>看前的期待、看完的感受，或任何不想忘記的念頭。</small></div><textarea aria-label={`寫下關於 ${imageQueryByTitle[active.title]} 的心得`} maxLength={280} placeholder="例如：第二季之後，我開始用不同的眼光看待這個角色……" value={notes[active.title]||""} onChange={e=>updateNote(active.title,e.target.value)}/><span>{(notes[active.title]||"").length} / 280 · 自動保存在這台裝置</span></div></div></article></div>}
-    {quizOpen&&<div className="quiz"><article><button className="close" onClick={()=>setQuizOpen(false)}>×</button>{quizPhase==="taste"?<><div className="quiz-progress"><span style={{width:`${((quiz+1)/quizData.length)*100}%`}}/></div><small>長期觀看品味 · {quiz+1} / {quizData.length}</small><h2>{quizData[quiz].q}</h2><p>沒有正確答案。請選擇第一個接近你直覺的回答。</p><div className="answers">{quizData[quiz].a.map((a,i)=><button key={a} onClick={()=>answerQuiz(a)}><b>{String.fromCharCode(65+i)}</b><span>{a}</span><i>→</i></button>)}</div></>:<><div className="quiz-progress complete"><span/></div><small>最後一題 · 此刻的你</small><h2>今晚，你想從一部影集得到什麼？</h2><p>這不會改變你的長期品味，只影響這一次的推薦。</p><div className="mood-grid">{["想笑一笑","想被安慰","想緊張刺激","想沉浸思考","給我一個意外"].map((m,i)=><button key={m} onClick={()=>chooseMood(m)}><b>0{i+1}</b><span>{m}</span><i>→</i></button>)}</div></>}<button className="skip" onClick={()=>setQuizOpen(false)}>稍後再回答</button></article></div>}{toast&&<div className="toast" role="status">{toast}</div>}
+    {compare.length>0&&<div className="comparebar">
+<span>比較作品（{compare.length}/3）</span>{compare.map(s=>
+<button key={s.title} onClick={()=>toggleCompare(s)}>{imageQueryByTitle[s.title]} <small>{s.title}</small> ×</button>)}<button className="go" onClick={()=>setActive(compare[0])}>放在一起看看 →</button>
+</div>}
+    {active&&<div className="modal" onClick={()=>setActive(null)}>
+<article className="detail" onClick={e=>e.stopPropagation()}>
+<button className="close" onClick={()=>setActive(null)}>×</button>{posters[active.title]&&<div className="full-poster" style={{backgroundImage:`url(${posters[active.title]})`}}/>}<div className="detail-copy">
+<small>{active.genre} · {active.platform} · {active.seasons}</small>
+<h2>{imageQueryByTitle[active.title]}</h2>
+<em>{active.title} · {active.year}—{active.end}</em>
+<div className="detail-scores">
+<div>
+<b>{personalScore(active)}%</b>
+<span>與你的契合度</span>
+<small>依觀看品味與今晚心情</small>
+</div>
+<div>
+<b>{active.score}</b>
+<span>作品評分</span>
+<small>依十個觀看角度綜合判斷</small>
+</div>
+</div>
+<h3>它為什麼值得留下？</h3>
+<p>{active.note}</p>
+<div className="score-summary">
+<b>本作最突出的三個面向</b>
+<small>完整作品評分由十個觀看角度綜合而成；以下摘錄得分最高的三項。</small>
+</div>
+<div className="scorelines">{topCriteriaFor(active).map(item=>
+<label key={item.name}>{item.name}<span>
+<i style={{width:`${item.score}%`}}/>
+</span>
+<b>{item.score}</b>
+</label>)}</div>{externalReception[imageQueryByTitle[active.title]]&&<section className="outside-voice">
+<div className="outside-head">
+<small>RECEPTION &amp; LEGACY</small>
+<h3>外界如何記得它</h3>
+<p>不同資料代表不同觀點，不合併成另一個分數。</p>
+</div>
+<article>
+<b>觀眾反應</b>
+<p>{externalReception[imageQueryByTitle[active.title]].audience}</p>
+<div>
+<a href={externalReception[imageQueryByTitle[active.title]].imdb} target="_blank" rel="noreferrer">IMDb 觀眾評論 ↗</a>
+<a href={externalReception[imageQueryByTitle[active.title]].reddit} target="_blank" rel="noreferrer">Reddit 討論 ↗</a>
+</div>
+</article>
+<article>
+<b>影評共識</b>
+<p>{externalReception[imageQueryByTitle[active.title]].critics}</p>
+</article>
+<small className="source-note">觀眾摘要避開重大劇情；影評共識聚焦表演、編劇、導演與製作技術。</small>
+</section>}<button className={`primary save-primary ${saved.includes(active.title)?"is-saved":""}`} onClick={()=>toggleSaved(active)}>{saved.includes(active.title)?"✓ 已在我的片單 · 點擊移除":"＋ 留到我的片單"}</button>
+<div className="personal-note">
+<div>
+<h3>留一句話給自己</h3>
+<small>看前的期待、看完的感受，或任何不想忘記的念頭。</small>
+</div>
+<textarea aria-label={`寫下關於 ${imageQueryByTitle[active.title]} 的心得`} maxLength={280} placeholder="例如：第二季之後，我開始用不同的眼光看待這個角色……" value={notes[active.title]||""} onChange={e=>updateNote(active.title,e.target.value)}/>
+<span>{(notes[active.title]||"").length} / 280 · 自動保存在這台裝置</span>
+</div>
+</div>
+</article>
+</div>}
+    {quizOpen&&<div className="quiz">
+<article>
+<button className="close" onClick={()=>setQuizOpen(false)}>×</button>{quizPhase==="taste"?<>
+<div className="quiz-progress">
+<span style={{width:`${((quiz+1)/quizData.length)*100}%`}}/>
+</div>
+<small>長期觀看品味 · {quiz+1} / {quizData.length}</small>
+<h2>{quizData[quiz].q}</h2>
+<p>沒有正確答案。請選擇第一個接近你直覺的回答。</p>
+<div className="answers">{quizData[quiz].a.map((a,i)=>
+<button key={a} onClick={()=>answerQuiz(a)}>
+<b>{String.fromCharCode(65+i)}</b>
+<span>{a}</span>
+<i>→</i>
+</button>)}</div>
+</>:<>
+<div className="quiz-progress complete">
+<span/>
+</div>
+<small>最後一題 · 此刻的你</small>
+<h2>今晚，你想從一部影集得到什麼？</h2>
+<p>這不會改變你的長期品味，只影響這一次的推薦。</p>
+<div className="mood-grid">{["想笑一笑","想被安慰","想緊張刺激","想沉浸思考","給我一個意外"].map((m,i)=>
+<button key={m} onClick={()=>chooseMood(m)}>
+<b>0{i+1}</b>
+<span>{m}</span>
+<i>→</i>
+</button>)}</div>
+</>}<button className="skip" onClick={()=>setQuizOpen(false)}>稍後再回答</button>
+</article>
+</div>}{toast&&<div className="toast" role="status">{toast}</div>}
   </main>
 }
