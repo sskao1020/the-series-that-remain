@@ -33,11 +33,21 @@ test("all series use curated subgenres", async () => {
 
 test("detail highlights come from each series profile", async () => {
   const page = await readFile(pageUrl, "utf8");
+  const profileBlock = page.slice(
+    page.indexOf("const strengthOverrides"),
+    page.indexOf("const topCriteriaFor"),
+  );
+  const profiles = [...profileBlock.matchAll(/"([^"]+)":\[(\d),(\d),(\d)\]/g)];
 
+  assert.equal(profiles.length, 100);
+  assert.equal(new Set(profiles.map(match=>match[1])).size, 100);
   assert.match(page, /topCriteriaFor\(active\)\.map/);
   assert.doesNotMatch(page, /criteria\.slice\(0,3\)/);
+  assert.doesNotMatch(page, /criterionProfiles|\?\?\[1,4,6\]/);
+  assert.match(page, /Missing score profile/);
   assert.match(page, /"The Wire":\[0,1,7\]/);
   assert.match(page, /"Breaking Bad":\[1,2,4\]/);
+  assert.match(page, /"Narcos":\[4,5,7\]/);
 });
 
 test("award records remain data-only", async () => {
