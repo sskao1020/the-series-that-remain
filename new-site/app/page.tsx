@@ -2,10 +2,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 import { useEffect, useMemo, useState } from "react";
-import { shows, tiers, tonightFeelings, type Show } from "./data/shows";
+import { categories, categoryOf, shows, tiers, type Show } from "./data/shows";
 
 type View = "探索" | "時間之選" | "為我推薦" | "我的片單" | "我們怎麼選";
-type Profile = { tastes: string[]; feeling: string; name: string };
+type Profile = { tastes: string[]; category: string; name: string };
 
 const quiz = [
   { q:"一部作品最先抓住你的，通常是什麼？", a:[["一個人的內心與關係","人物親密感"],["一整個制度或世界如何運作","制度與世界"]] },
@@ -43,7 +43,8 @@ export default function Home() {
       try {
         setSaved(JSON.parse(localStorage.getItem("remain-v2-list")||"[]"));
         setNotes(JSON.parse(localStorage.getItem("remain-v2-notes")||"{}"));
-        setProfile(JSON.parse(localStorage.getItem("remain-v2-profile")||"null"));
+        const storedProfile=JSON.parse(localStorage.getItem("remain-v2-profile")||"null");
+        setProfile(storedProfile?.category?storedProfile:null);
       } catch {
         localStorage.removeItem("remain-v2-list");
         localStorage.removeItem("remain-v2-notes");
@@ -68,12 +69,12 @@ export default function Home() {
     setToast(next.includes(show.id)?"已留到你的片單":"已從片單移除"); setTimeout(()=>setToast(""),1800);
   };
   const updateNote=(id:string,value:string)=>{const next={...notes,[id]:value};setNotes(next);localStorage.setItem("remain-v2-notes",JSON.stringify(next))};
-  const finishQuiz=(feeling:string)=>{const next={tastes:answers,feeling,name:profileName(answers)};setProfile(next);localStorage.setItem("remain-v2-profile",JSON.stringify(next));setQuizOpen(false);setStep(0);setAnswers([]);setView("為我推薦")};
+  const finishQuiz=(category:string)=>{const next={tastes:answers,category,name:profileName(answers)};setProfile(next);localStorage.setItem("remain-v2-profile",JSON.stringify(next));setQuizOpen(false);setStep(0);setAnswers([]);setView("為我推薦")};
   const answer=(value:string)=>{const next=[...answers,value];setAnswers(next);setStep(step+1)};
-  const fit=(show:Show)=>!profile?0:show.taste.filter(x=>profile.tastes.includes(x)).length*2+show.feelings.filter(x=>x===profile.feeling).length*3;
+  const fit=(show:Show)=>!profile?0:show.taste.filter(x=>profile.tastes.includes(x)).length*2+(categoryOf(show)===profile.category?3:0);
   const personal=useMemo(()=>[...shows].sort((a,b)=>fit(b)-fit(a)),[profile]); // eslint-disable-line react-hooks/exhaustive-deps
-  const genres=["全部",...new Set(shows.map(s=>s.genre.split("／")[0]))];
-  const filtered=shows.filter(s=>(genre==="全部"||s.genre.startsWith(genre))&&(!query||`${s.title}${s.titleZh}${s.genre}`.toLowerCase().includes(query.toLowerCase())));
+  const genres=["全部",...categories];
+  const filtered=shows.filter(s=>(genre==="全部"||categoryOf(s)===genre)&&(!query||`${s.title}${s.titleZh}${categoryOf(s)}`.toLowerCase().includes(query.toLowerCase())));
 
   const Card=({show,personalMode=false}:{show:Show;personalMode?:boolean})=>
 <div className="show-card" role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")setActive(show)}} onClick={()=>setActive(show)}>
@@ -82,10 +83,10 @@ export default function Home() {
 <small>{show.years}</small>
     </div>
     <div className="card-body">
-<p className="eyebrow">{show.genre} · {show.network}</p>
+<p className="eyebrow">{categoryOf(show)} · {show.network}</p>
 <h3>{show.title}</h3>
 <h4>{show.titleZh}</h4>
-      {personalMode&&profile?<p className="match-line">適合你，因為你今晚想要「{profile.feeling}」，也偏愛{show.taste.filter(x=>profile.tastes.includes(x)).slice(0,2).join("與")||show.strengths[0]}的作品。</p>:<p className="reason-line">
+      {personalMode&&profile?<p className="match-line">今晚想看{profile.category}，而你平常也在意{show.taste.filter(x=>profile.tastes.includes(x)).slice(0,2).join("、")||show.strengths[0]}。這部可以先看。</p>:<p className="reason-line">
 <b>{show.strengths[0]}</b>{show.reason}</p>}
       <div className="card-actions">
 <button onClick={e=>{e.stopPropagation();save(show)}}>{saved.includes(show.id)?"✓ 已收藏":"＋ 留到片單"}</button>
@@ -114,7 +115,7 @@ export default function Home() {
 <div>
 <p className="eyebrow">百部規模的完結影集選庫</p>
 <h1>不是下一部熱門，<br/>而是值得你留下時間的一部。</h1>
-<p>給已經對熱門排行榜疲乏的觀眾。我們從通過時間考驗的完結作品裡，保留觀點、門檻與真正值得投入的理由。</p>
+<p>給看膩熱門排行榜的人。我們只談已經完結、也經得起回頭看的作品，並說清楚它好在哪裡，又可能勸退誰。</p>
 <div className="hero-actions">
 <button className="solid" onClick={()=>setQuizOpen(true)}>{profile?"重新認識我的品味":"開始認識我的品味"}</button>
 <button onClick={()=>setView("時間之選")}>先看看時間之選</button>
@@ -137,7 +138,7 @@ export default function Home() {
 </aside>
 </section>
       <section className="manifesto">
-<p>「真正留下來的作品，往往不是毫無缺點；而是在多年之後，仍能讓人重新理解角色、時代，甚至自己。」</p>
+<p>「多年後再看，仍能從人物、時代，也從自己身上讀出新的東西。這樣的影集，才留得下來。」</p>
 </section>
       <section className="section">
 <div className="section-head">
@@ -156,7 +157,7 @@ export default function Home() {
 <div className="page-intro">
 <p className="eyebrow">THE EDITORIAL SELECTION</p>
 <h1>時間之選</h1>
-<p>不把作品排成一條假裝客觀的直線。這裡只有三種留下方式：成為共同語言、改變一個領域，或保有無可取代的獨特。</p>
+<p>這裡不排第一名。作品依照影響與特色分成三層，讓你知道本站怎麼看它，也更容易找到想看的方向。</p>
 <div className="review-progress">
 <span style={{width:"22%"}}/>
 <b>首批 22 部已複核 · 完整選庫持續建立中</b>
@@ -171,7 +172,7 @@ export default function Home() {
 <div className="tier-title">
 <p className="eyebrow">{tier==="經典核心"?"THE CORE":tier==="重要作品"?"ESSENTIAL WORKS":"SINGULAR VOICES"}</p>
 <h2>{tier}</h2>
-<p>{tier==="經典核心"?"跨越類型與年代，仍構成我們談論影集時的共同語言。":tier==="重要作品"?"在特定類型、時代或創作面向，無法被忽略。":"未必面面俱到，卻有其他作品難以取代的觀看價值。"}</p>
+<p>{tier==="經典核心"?"多年後仍被反覆觀看，也改變了後來的影集。":tier==="重要作品"?"在自己的類型或年代裡，留下了清楚的位置。":"不求面面俱到，但有一項特色做得難以取代。"}</p>
 </div>
 <div className="card-grid">{items.map(s=>
 <Card key={s.id} show={s}/>)}</div>
@@ -181,13 +182,13 @@ export default function Home() {
     {view==="為我推薦"&&<section className="personal-page">{!profile?<div className="empty-state">
 <p className="eyebrow">FOR YOU</p>
 <h1>先讓我們認識你的觀看方式。</h1>
-<p>六個選擇認識長期品味，再告訴我們今晚想得到什麼。沒有權重，也不會把你關進一種人格。</p>
+<p>先用六題整理你平常在意的事，再選今晚想看的類型。結果只是這次找片的起點，不會替你貼標籤。</p>
 <button className="solid" onClick={()=>setQuizOpen(true)}>開始觀看問答</button>
 </div>:<>
 <div className="page-intro personal-intro">
 <p className="eyebrow">FOR {profile.name.toUpperCase()}</p>
-<h1>今晚想要「{profile.feeling}」</h1>
-<p>我們先找長期品味與今晚感受的交集；沒有完美答案時，也不會捏造一個契合度百分比。</p>
+<h1>今晚想看「{profile.category}」</h1>
+<p>以下作品同時符合你平常在意的事和今晚選的類型。沒有百分比，只有可以核對的推薦理由。</p>
 <button onClick={()=>setQuizOpen(true)}>重新探索</button>
 </div>
       <section className="section flush">
@@ -206,7 +207,7 @@ export default function Home() {
 <div className="page-intro">
 <p className="eyebrow">MY LIST · LOCAL FIRST</p>
 <h1>留給下一個晚上的故事</h1>
-<p>這份片單與你的話目前只保存在這台裝置。策展身分會改變，但你的觀看歷史不會因此消失。</p>
+<p>片單和筆記目前只存在這台裝置，不會上傳。之後網站改版，你留下的內容也不會被拿去公開。</p>
 </div>{saved.length?<div className="saved-list">{shows.filter(s=>saved.includes(s.id)).map(s=>
 <div key={s.id}>
 <Card show={s}/>
@@ -221,23 +222,23 @@ export default function Home() {
 <div className="method-hero">
 <p className="eyebrow">HOW WE READ</p>
 <h1>我們不替作品製造一個<br/>看似客觀的答案。</h1>
-<p>本站作者決定收錄資格、策展層級、三項強項與最後文字；AI 協助整理 IMDb、Reddit、專業影評、官方獎項與主創資料。外部資料是佐證，不會偷偷變成分數。</p>
+<p>收不收、放在哪一層、哪三項最突出，最後都由本站判斷。AI 只協助整理 IMDb、Reddit、專業影評、官方獎項和主創資料。這些資料用來查證，不會換算成分數。</p>
 </div>
 <div className="principles">
 <article>
 <b>01</b>
 <h3>三年只是審查資格</h3>
-<p>作品按完結年份滿三年後，才有資格被重新審視；時間經過本身不保證它會留下。</p>
+<p>作品完結滿三年，才會進入正式選庫。但年資只是門檻，不代表一定收錄。</p>
 </article>
 <article>
 <b>02</b>
 <h3>缺點不會被平均掉</h3>
-<p>每部作品都必須說明觀看門檻。幫你放棄一部不適合的作品，也是有效的推薦。</p>
+<p>每部作品都要說清楚可能勸退你的地方。少浪費幾個晚上，也是一種推薦。</p>
 </article>
 <article>
 <b>03</b>
 <h3>資料與判斷分開</h3>
-<p>年份、獎項與評論可以查核；作品是否仍重要則是編輯判斷，兩者不假裝成同一件事。</p>
+<p>年份、獎項和評論都有來源。作品是否重要，則是本站的看法。我們會把兩者分開寫清楚。</p>
 </article>
 </div>
 <div className="review-check">
@@ -257,7 +258,7 @@ export default function Home() {
 <span>{active.tier}</span>
 </div>
 <div className="detail-copy">
-<p className="eyebrow">{active.genre} · {active.network} · {active.seasons}</p>
+<p className="eyebrow">{categoryOf(active)} · {active.network} · {active.seasons}</p>
 <h2>{active.title}</h2>
 <h3>{active.titleZh} <small>{active.years}</small>
 </h3>
@@ -268,7 +269,7 @@ export default function Home() {
 <p>{active.reason}</p>
 </section>
 <section className="barrier">
-<h4>你可能會停下來的原因</h4>
+<h4>先知道這些，再決定要不要看</h4>
 <p>{active.barrier}</p>
 </section>
 <section className="voices">
@@ -310,10 +311,10 @@ export default function Home() {
 <span>{label}</span>→</button>)}</div>
 </>:<>
 <p className="eyebrow">TONIGHT</p>
-<h2>今晚，你想從一部影集裡得到什麼？</h2>
-<p>只選此刻的感受；它不會改寫你的長期品味。</p>
-<div className="feelings">{tonightFeelings.map(f=>
-<button key={f} onClick={()=>finishQuiz(f)}>{f}</button>)}</div>
+<h2>今晚想看哪一類？</h2>
+<p>只選一個類型。前面的回答仍會決定作品如何排序。</p>
+<div className="feelings">{categories.map(category=>
+<button key={category} onClick={()=>finishQuiz(category)}>{category}</button>)}</div>
 </>}</article>
 </div>}
     {toast&&<div className="toast">{toast}</div>}

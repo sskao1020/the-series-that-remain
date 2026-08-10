@@ -1,4 +1,5 @@
 export type Tier = "經典核心" | "重要作品" | "獨特之作";
+export type Category = "犯罪" | "劇情" | "喜劇" | "歷史" | "政治" | "科幻" | "動畫" | "運動";
 
 export type SourceGroup = {
   label: "觀眾" | "影評" | "獎項" | "主創";
@@ -63,5 +64,14 @@ export const shows: Show[] = [
 ];
 
 export const tiers: Tier[] = ["經典核心", "重要作品", "獨特之作"];
+export const categories: Category[] = ["犯罪", "劇情", "喜劇", "歷史", "政治", "科幻", "動畫", "運動"];
+const categoryByShow: Record<string, Category> = {
+  "the-wire":"犯罪", "six-feet-under":"劇情", "breaking-bad":"犯罪", "mad-men":"劇情",
+  "the-sopranos":"犯罪", "succession":"劇情", "band-of-brothers":"歷史", "the-americans":"政治",
+  "fleabag":"喜劇", "chernobyl":"歷史", "the-west-wing":"政治", "the-shield":"犯罪",
+  "the-office":"喜劇", "arrested-development":"喜劇", "battlestar-galactica":"科幻", "deadwood":"劇情",
+  "better-call-saul":"犯罪", "the-good-place":"喜劇", "bojack-horseman":"動畫", "the-queens-gambit":"劇情",
+  "rectify":"劇情", "friday-night-lights":"運動",
+};
+export const categoryOf = (show: Show): Category => categoryByShow[show.id];
 export const tasteAxes = ["人物親密感","制度與世界","寫實","寓言／超現實","緩慢沉浸","強情節推進","情緒安慰","挑戰與不安","封閉完整","留白曖昧","熟悉類型","形式實驗"];
-export const tonightFeelings = ["放鬆","想笑","感動","思考","緊張","刺激","沉浸","振奮"];
