@@ -57,6 +57,7 @@ test("award totals remain data-only while major awards appear", async () => {
   ]);
   assert.match(page, /重大獎項/);
   assert.doesNotMatch(page, /獎項紀錄|獲獎／入圍|awardTallies/);
+  assert.doesNotMatch(page, /觀眾摘要避開重大劇情|重大獎項僅摘錄/);
   assert.match(page, /award\.result!=="nominated"/);
   assert.doesNotMatch(css, /outside-voice>article:nth-of-type\(3\)/);
 });

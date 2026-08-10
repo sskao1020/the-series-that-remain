@@ -380,7 +380,6 @@ export default function Home() {
 <strong>{award.organization}</strong>{award.category}{award.recipient&&<small>{award.recipient}</small>}</span>
 </li>)}</ul>
 </article>}
-<small className="source-note">觀眾摘要避開重大劇情；影評共識聚焦表演、編劇、導演與製作技術。重大獎項僅摘錄代表性紀錄，不呈現獲獎與入圍統計。</small>
 </section>}<button className={`primary save-primary ${saved.includes(active.title)?"is-saved":""}`} onClick={()=>toggleSaved(active)}>{saved.includes(active.title)?"✓ 已在我的片單 · 點擊移除":"＋ 留到我的片單"}</button>
 <div className="personal-note">
 <div>
