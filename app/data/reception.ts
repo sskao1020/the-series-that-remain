@@ -1,16 +1,27 @@
+import { expandedReception } from "./expanded-reception";
+
 export type MajorAward = {
-  organization: "Emmy" | "Golden Globe" | "Peabody" | "SAG" | "TCA";
+  organization: string;
   year: number;
   category: string;
   ceremonyDate?: string;
   recipient?: string;
   sourceUrl?: string;
+  result?: "won" | "nominated";
+};
+
+export type AwardTally = {
+  organization: string;
+  nominations: number | null;
+  wins: number | null;
+  sourceUrl: string;
 };
 
 export type ExternalReception = {
   audience: string;
   critics: string;
   awards: MajorAward[];
+  awardTallies?: AwardTally[];
   imdb: string;
   reddit: string;
   awardsUrl: string;
@@ -27,6 +38,7 @@ export const externalReception: Record<string, ExternalReception> = {
     audience: "觀眾常把它形容為需要耐心進入、卻極有回報的慢熱作品；群像厚度、制度觀察與重看價值最常受到稱讚。",
     critics: "影評尤為肯定小說式長篇結構、自然主義表演與對白，以及多條人物線如何被剪輯成完整的城市剖面。",
     awards: [{ organization: "Peabody", year: 2003, category: "Peabody Award", sourceUrl: "https://peabodyawards.com/award-profile/the-wire/" }],
+    awardTallies: [{ organization: "Emmy", nominations: 2, wins: 0, sourceUrl: "https://www.televisionacademy.com/shows/wire" }],
     ...sources("The Wire HBO", "tt0306414"),
   },
   "Six Feet Under": {
@@ -37,6 +49,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2002, category: "最佳片頭主題音樂", recipient: "Thomas Newman" },
       { organization: "Emmy", year: 2006, category: "戲劇類最佳客串女演員", recipient: "Patricia Clarkson" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 53, wins: 9, sourceUrl: "https://www.televisionacademy.com/shows/six-feet-under" }],
     ...sources("Six Feet Under HBO", "tt0248654"),
   },
   "Breaking Bad": {
@@ -47,12 +60,14 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2014, category: "最佳戲劇類影集" },
       { organization: "Emmy", year: 2014, category: "戲劇類最佳編劇", recipient: "Moira Walley-Beckett" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 58, wins: 16, sourceUrl: "https://www.televisionacademy.com/shows/breaking-bad" }],
     ...sources("Breaking Bad AMC", "tt0903747"),
   },
   "Mad Men": {
     audience: "喜愛者著迷於人物細節、時代氛圍與大量留白；不習慣慢節奏的觀眾，則較容易覺得事件推進不夠明顯。",
     critics: "影評普遍讚賞精準的場面調度、服裝與美術考據、克制表演，以及對白之下持續流動的心理暗線。",
     awards: [2008, 2009, 2010, 2011].map(year => ({ organization: "Emmy" as const, year, category: "最佳戲劇類影集" })),
+    awardTallies: [{ organization: "Emmy", nominations: 116, wins: 16, sourceUrl: "https://www.televisionacademy.com/shows/mad-men" }],
     ...sources("Mad Men AMC", "tt0804503"),
   },
   "The Sopranos": {
@@ -63,12 +78,14 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2004, category: "最佳戲劇類影集" },
       { organization: "Emmy", year: 2007, category: "最佳戲劇類影集" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 112, wins: 21, sourceUrl: "https://www.televisionacademy.com/shows/sopranos" }],
     ...sources("The Sopranos HBO", "tt0141842"),
   },
   "Watchmen": {
     audience: "熟悉原作的觀眾多半欣賞它選擇擴寫世界，而非重述舊故事；複雜時間線與政治寓言則帶來一定的進入門檻。",
     critics: "影評肯定 Regina King 的核心表演、非線性編劇、聲音與配樂設計，以及類型娛樂和歷史題材之間的形式實驗。",
     awards: [{ organization: "Emmy", year: 2020, category: "最佳有限影集" }],
+    awardTallies: [{ organization: "Emmy", nominations: 26, wins: 11, sourceUrl: "https://www.televisionacademy.com/shows/watchmen" }],
     ...sources("Watchmen HBO series", "tt7049682"),
   },
   "Succession": {
@@ -79,6 +96,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2022, category: "最佳戲劇類影集" },
       { organization: "Emmy", year: 2023, ceremonyDate: "2024-01-15", category: "最佳戲劇類影集" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 75, wins: 19, sourceUrl: "https://www.televisionacademy.com/shows/succession" }],
     ...sources("Succession HBO", "tt7660850"),
   },
   "Band of Brothers": {
@@ -88,6 +106,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2002, category: "最佳迷你影集" },
       { organization: "Golden Globe", year: 2002, category: "最佳迷你影集或電視電影" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 20, wins: 7, sourceUrl: "https://www.televisionacademy.com/shows/band-brothers" }],
     ...sources("Band of Brothers HBO", "tt0185906"),
   },
   "The Americans": {
@@ -99,6 +118,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Peabody", year: 2015, category: "Peabody Award" },
       { organization: "Peabody", year: 2018, category: "Peabody Award" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 18, wins: 4, sourceUrl: "https://www.televisionacademy.com/shows/americans" }],
     ...sources("The Americans FX", "tt2149175"),
   },
   "Fargo": {
@@ -108,6 +128,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2014, category: "最佳迷你影集" },
       { organization: "Golden Globe", year: 2015, category: "最佳迷你影集或電視電影" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 70, wins: 7, sourceUrl: "https://www.televisionacademy.com/shows/fargo" }],
     ...sources("Fargo FX series", "tt2802850"),
   },
   "Fleabag": {
@@ -118,12 +139,14 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2019, category: "最佳喜劇類女主角" },
       { organization: "Emmy", year: 2019, category: "最佳喜劇類編劇" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 11, wins: 6, sourceUrl: "https://www.televisionacademy.com/shows/fleabag" }],
     ...sources("Fleabag BBC", "tt5687612"),
   },
   "Chernobyl": {
     audience: "觀眾普遍讚賞壓迫感、表演與災難細節，也常把它視為進一步理解事件背景的起點；史實取捨則持續受到討論。",
     critics: "評論界肯定 Craig Mazin 的緊密劇本、Jared Harris 等人的群戲、灰冷攝影，以及 Hildur Guðnadóttir 令人不安的聲音設計。",
     awards: [{ organization: "Emmy", year: 2019, category: "最佳有限影集" }],
+    awardTallies: [{ organization: "Emmy", nominations: 19, wins: 10, sourceUrl: "https://www.televisionacademy.com/shows/chernobyl" }],
     ...sources("Chernobyl HBO", "tt7366338"),
   },
   "Twin Peaks": {
@@ -133,6 +156,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 1990, category: "最佳服裝設計" },
       { organization: "Emmy", year: 1990, category: "單鏡頭最佳剪輯" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 27, wins: 2, sourceUrl: "https://www.televisionacademy.com/shows/twin-peaks" }],
     ...sources("Twin Peaks series", "tt0098936"),
   },
   "The X-Files": {
@@ -143,12 +167,14 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 1997, category: "戲劇類最佳女主角", recipient: "Gillian Anderson" },
       { organization: "Emmy", year: 1997, category: "影集類最佳攝影" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 61, wins: 15, sourceUrl: "https://www.televisionacademy.com/shows/x-files" }],
     ...sources("The X-Files", "tt0106179"),
   },
   "The West Wing": {
     audience: "觀眾喜歡快速對白、理想主義與團隊默契；高密度政策資訊和偏浪漫的政治視角，也可能成為進入門檻。",
     critics: "評論界讚賞 Aaron Sorkin 的語言節奏、走廊長鏡頭、群像調度與演員接力般的對白表演。",
     awards: [2000, 2001, 2002, 2003].map(year => ({ organization: "Emmy" as const, year, category: "最佳戲劇類影集" })),
+    awardTallies: [{ organization: "Emmy", nominations: 95, wins: 26, sourceUrl: "https://www.televisionacademy.com/shows/west-wing" }],
     ...sources("The West Wing NBC", "tt0200276"),
   },
   "The Shield": {
@@ -159,6 +185,7 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Golden Globe", year: 2003, category: "最佳戲劇類影集" },
       { organization: "Peabody", year: 2005, category: "Peabody Award" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 6, wins: 1, sourceUrl: "https://www.televisionacademy.com/shows/shield" }],
     ...sources("The Shield FX", "tt0286486"),
   },
   "Lost": {
@@ -169,18 +196,21 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2005, category: "戲劇類最佳導演", recipient: "J.J. Abrams" },
       { organization: "Emmy", year: 2005, category: "最佳原創配樂", recipient: "Michael Giacchino" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 51, wins: 10, sourceUrl: "https://www.televisionacademy.com/shows/lost" }],
     ...sources("Lost ABC", "tt0411008"),
   },
   "The Office": {
     audience: "觀眾對角色陪伴感、尷尬幽默與可反覆觀看性評價很高；不同時期的喜劇風格變化，則各有擁護者。",
     critics: "影評肯定群戲節奏、即興感與鏡頭反應，也認為美版逐步把英版形式轉化成更溫暖、適合長篇發展的職場喜劇。",
     awards: [{ organization: "Emmy", year: 2006, category: "最佳喜劇類影集" }],
+    awardTallies: [{ organization: "Emmy", nominations: 42, wins: 5, sourceUrl: "https://www.televisionacademy.com/shows/office" }],
     ...sources("The Office US NBC", "tt0386676"),
   },
   "Arrested Development": {
     audience: "觀眾喜愛密集伏筆、旁白和層層回收的笑點，也常認為需要重看才能真正接住；不同製作時期的評價有所落差。",
     critics: "評論界讚賞非線性剪輯、旁白、群戲與高度連鎖的編劇結構，笑點密度遠超當時多數情境喜劇。",
     awards: [{ organization: "Emmy", year: 2004, category: "最佳喜劇類影集" }],
+    awardTallies: [{ organization: "Emmy", nominations: 25, wins: 6, sourceUrl: "https://www.televisionacademy.com/shows/arrested-development" }],
     ...sources("Arrested Development", "tt0367279"),
   },
   "Battlestar Galactica": {
@@ -191,6 +221,9 @@ export const externalReception: Record<string, ExternalReception> = {
       { organization: "Emmy", year: 2007, category: "影集類最佳視覺效果" },
       { organization: "Emmy", year: 2009, category: "影集類最佳音效剪輯" },
     ],
+    awardTallies: [{ organization: "Emmy", nominations: 25, wins: 5, sourceUrl: "https://www.televisionacademy.com/shows/battlestar-galactica" }],
     ...sources("Battlestar Galactica 2004", "tt0407362"),
   },
 };
+
+Object.assign(externalReception, expandedReception);
