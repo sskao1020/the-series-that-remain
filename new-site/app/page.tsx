@@ -123,8 +123,8 @@ export default function Home() {
 </div>
         <aside>
 <span>本次私人預覽</span>
-<strong>22</strong>
-<p>部作品完成首輪人工複核</p>
+<strong>{shows.length}</strong>
+<p>部作品完成編輯複核</p>
 <dl>
 <div>
 <dt>沒有</dt>
@@ -159,8 +159,8 @@ export default function Home() {
 <h1>時間之選</h1>
 <p>這裡不排第一名。作品依照影響與特色分成三層，讓你知道本站怎麼看它，也更容易找到想看的方向。</p>
 <div className="review-progress">
-<span style={{width:"22%"}}/>
-<b>首批 22 部已複核 · 完整選庫持續建立中</b>
+<span style={{width:`${shows.length}%`}}/>
+<b>目前 {shows.length} 部已複核 · 選庫持續增加中</b>
 </div>
 </div>
       <div className="catalog-tools">

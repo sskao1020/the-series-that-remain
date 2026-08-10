@@ -6,14 +6,14 @@ const data = await readFile(new URL("../app/data/shows.ts", import.meta.url), "u
 const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
 const showBlock = data.slice(data.indexOf("export const shows"), data.indexOf("export const tiers"));
 
-test("private preview starts with at least twenty reviewed works", () => {
-  assert.equal([...showBlock.matchAll(/reviewedAt:"2026-08-10"/g)].length, 22);
-  assert.equal([...showBlock.matchAll(/id:"[^"]+"/g)].length, 22);
+test("expanded preview contains forty-two reviewed works", () => {
+  assert.equal([...showBlock.matchAll(/reviewedAt:"2026-08-10"/g)].length, 42);
+  assert.equal([...showBlock.matchAll(/id:"[^"]+"/g)].length, 42);
 });
 
 test("every reviewed work carries editorial and recommendation fields", () => {
   for (const field of ["strengths", "reason", "barrier", "audience", "critics", "taste", "feelings", "tone", "sources"]) {
-    assert.equal([...showBlock.matchAll(new RegExp(`${field}:`, "g"))].length, 22, field);
+    assert.equal([...showBlock.matchAll(new RegExp(`${field}:`, "g"))].length, 42, field);
   }
 });
 
