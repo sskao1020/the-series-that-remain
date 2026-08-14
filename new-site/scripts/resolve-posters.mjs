@@ -27,7 +27,7 @@ const queryOverrides = {
 const normalize = (value) => value.normalize("NFKD").replace(/[^a-z0-9]+/gi, "").toLowerCase();
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 const posterByShowId = {};
-const localFallbacks = { "this-is-england-tv": "/posters/this-is-england-tv.svg" };
+const localFallbacks = { "this-is-england-tv": "/posters/this-is-england-tv.png" };
 const review = [];
 
 for (const [index, show] of shows.entries()) {
