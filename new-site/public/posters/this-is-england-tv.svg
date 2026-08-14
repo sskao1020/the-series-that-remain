@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" role="img" aria-labelledby="title description">
+  <title id="title">This Is England television trilogy editorial cover</title>
+  <desc id="description">A typographic editorial cover for This Is England 86, 88 and 90.</desc>
+  <rect width="800" height="1200" fill="#14241f"/>
+  <path d="M0 0h800v280H0z" fill="#b25c39"/>
+  <path d="M0 920h800v280H0z" fill="#d7c6a0"/>
+  <g fill="none" stroke="#f1eadc" stroke-width="10" opacity=".28">
+    <circle cx="690" cy="160" r="260"/>
+    <circle cx="110" cy="1000" r="310"/>
+  </g>
+  <text x="70" y="390" fill="#f1eadc" font-family="Arial, sans-serif" font-size="42" letter-spacing="12">THIS IS</text>
+  <text x="64" y="535" fill="#f1eadc" font-family="Georgia, serif" font-size="126" font-weight="700">ENGLAND</text>
+  <line x1="70" y1="600" x2="730" y2="600" stroke="#b25c39" stroke-width="8"/>
+  <text x="70" y="735" fill="#f1eadc" font-family="Arial, sans-serif" font-size="92" font-weight="700">’86  ’88  ’90</text>
+  <text x="70" y="830" fill="#b8c5bf" font-family="Arial, sans-serif" font-size="28" letter-spacing="6">THE TELEVISION CHAPTERS</text>
+  <text x="70" y="1040" fill="#14241f" font-family="Arial, sans-serif" font-size="28" letter-spacing="5">時間留下的影集</text>
+  <text x="70" y="1095" fill="#14241f" font-family="Arial, sans-serif" font-size="22" letter-spacing="3">EDITORIAL COVER</text>
+</svg>

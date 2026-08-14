@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { categories, categoryOf, shows, tiers, type Show } from "./data/shows";
+import { posterByShowId } from "./data/posters";
 
 type View = "探索" | "時間之選" | "為我推薦" | "我的片單" | "我們怎麼選";
 type Profile = { tastes: string[]; category: string; name: string };
@@ -35,7 +36,6 @@ export default function Home() {
   const [answers,setAnswers]=useState<string[]>([]);
   const [genre,setGenre]=useState("全部");
   const [query,setQuery]=useState("");
-  const [posters,setPosters]=useState<Record<string,string>>({});
   const [toast,setToast]=useState("");
 
   useEffect(()=>{
@@ -54,15 +54,6 @@ export default function Home() {
     return()=>window.clearTimeout(timer);
   },[]);
 
-  useEffect(()=>{
-    let alive=true;
-    Promise.all(shows.map(async show=>{
-      try { const r=await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(show.title)}`); const d=await r.json(); return [show.id,d.image?.original||d.image?.medium||""] as const; }
-      catch { return [show.id,""] as const; }
-    })).then(rows=>{if(alive)setPosters(Object.fromEntries(rows))});
-    return()=>{alive=false};
-  },[]);
-
   const save=(show:Show)=>{
     const next=saved.includes(show.id)?saved.filter(id=>id!==show.id):[...saved,show.id];
     setSaved(next); localStorage.setItem("remain-v2-list",JSON.stringify(next));
@@ -78,7 +69,7 @@ export default function Home() {
 
   const Card=({show,personalMode=false}:{show:Show;personalMode?:boolean})=>
 <div className="show-card" role="button" tabIndex={0} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")setActive(show)}} onClick={()=>setActive(show)}>
-    <div className="card-image" style={posters[show.id]?{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(14,25,22,.86)),url(${posters[show.id]})`}:{}}>
+    <div className="card-image" style={{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(14,25,22,.86)),url(${posterByShowId[show.id]})`}}>
       <span>{show.tier}</span>
 <small>{show.years}</small>
     </div>
@@ -254,7 +245,7 @@ export default function Home() {
     {active&&<div className="modal" role="dialog" aria-modal="true" tabIndex={-1} onKeyDown={e=>{if(e.key==="Escape")setActive(null)}} onMouseDown={e=>{if(e.target===e.currentTarget)setActive(null)}}>
 <article className="detail">
 <button className="close" onClick={()=>setActive(null)} aria-label="關閉">×</button>
-<div className="detail-poster" style={posters[active.id]?{backgroundImage:`linear-gradient(0deg,rgba(13,25,21,.8),transparent 60%),url(${posters[active.id]})`}:{}}>
+<div className="detail-poster" style={{backgroundImage:`linear-gradient(0deg,rgba(13,25,21,.8),transparent 60%),url(${posterByShowId[active.id]})`}}>
 <span>{active.tier}</span>
 </div>
 <div className="detail-copy">
