@@ -99,6 +99,7 @@ const expanded = (show: ExpandedShow): Show => ({
 });
 
 const finalShows: Show[] = [
+  expanded({id:"person-of-interest",title:"Person of Interest",titleZh:"疑犯追蹤",years:"2011—2016",completedYear:2016,genre:"科幻／犯罪",network:"CBS",seasons:"5 季",tier:"經典核心",strengths:["跨世代命題","劇本與群像","創新與影響力"],reason:"它從單集犯罪程序出發，逐步長成一部談監控、人工智慧與自由意志的長篇科幻。十年後再看，它提出的問題不但沒有過時，反而更像我們正在生活的現實。",barrier:"第一季保留大量單元辦案格式，真正的科幻主線需要時間展開；動作場面與部分人物設定也帶有 2010 年代無線電視網的痕跡。",audience:"觀眾常提到它由程序劇轉向人工智慧史詩的過程，也珍惜角色群、長線伏筆與完整收尾。",critics:"它把程序劇的單集節奏逐步併入長篇敘事，並透過聲音設計、介面影像與 Ramin Djawadi 的人物主題，讓看不見的系統具有清楚的存在感。",taste:["制度與世界","強情節推進","人物親密感","封閉完整"],imdb:"tt1839578",emmySlug:"person-interest",award:{year:"2012、2016",organization:"People's Choice",name:"Favorite New TV Drama、Favorite TV Crime Drama 得獎"}}),
   expanded({id:"the-newsroom",title:"The Newsroom",titleZh:"新聞編輯室",years:"2012—2014",completedYear:2014,genre:"政治／職場",network:"HBO",seasons:"3 季",tier:"獨特之作",strengths:["劇本與群像","娛樂性／可看性","跨世代命題"],reason:"它把新聞理想放進高速對話與編輯室衝突，立場鮮明，也留下媒體如何面對權力與速度的問題。",barrier:"說教感很強，角色常替作者辯論；現實新聞事件的重演也帶有事後諸葛的味道。",audience:"觀眾喜歡台詞、群像與新聞工作的理想性，也常對自我正義感感到疲乏。",critics:"評論肯定演員節奏與製作，同時質疑劇本對女性角色和真實事件的處理。",taste:["制度與世界","強情節推進","熟悉類型","挑戰與不安"],imdb:"tt1870479",emmySlug:"newsroom",award:{year:"2013",organization:"Emmy",name:"最佳戲劇類男主角"}}),
   expanded({id:"house-of-cards",title:"House of Cards",titleZh:"紙牌屋",years:"2013—2018",completedYear:2018,genre:"政治／驚悚",network:"Netflix",seasons:"6 季",tier:"重要作品",strengths:["創新與影響力","製作品質","娛樂性／可看性"],reason:"它以冷峻影像和直視鏡頭的手法，把政治算計變成串流時代早期最具代表性的追劇經驗。",barrier:"後期品質明顯下滑，主演的現實爭議也無法與作品完全切開。",audience:"觀眾最常肯定前兩季的節奏與權謀，對後段和結局普遍較保留。",critics:"評論重視 David Fincher 奠定的視覺、Robin Wright 的表演，以及它對串流原創劇的產業意義。",taste:["制度與世界","強情節推進","挑戰與不安","熟悉類型"],imdb:"tt1856010",emmySlug:"house-cards",award:{year:"2013",organization:"Emmy",name:"最佳戲劇類導演"}}),
   expanded({id:"mare-of-easttown",title:"Mare of Easttown",titleZh:"東城奇案",years:"2021",completedYear:2021,genre:"犯罪／迷你影集",network:"HBO",seasons:"7 集",tier:"重要作品",strengths:["劇本與人物","製作品質","完整度／收尾"],reason:"它把案件留在一座彼此熟識的小鎮裡，偵查的重量來自家庭、階級與多年累積的人情。",barrier:"題材沉重，人物關係密集；若只想看俐落推理，家庭支線可能顯得太多。",audience:"觀眾稱讚 Kate Winslet、地方感和情感收尾，也熱衷於案件線索。",critics:"評論肯定表演、方言、場景與劇本如何讓犯罪故事扎根於社區生活。",taste:["人物親密感","寫實","強情節推進","封閉完整"],imdb:"tt10155688",emmySlug:"mare-easttown",award:{year:"2021",organization:"Emmy",name:"最佳迷你影集女主角"}}),
@@ -174,7 +175,7 @@ const categoryByShow: Record<string, Category> = {
   "game-of-thrones":"劇情", "the-leftovers":"劇情", "mr-robot":"犯罪", "orange-is-the-new-black":"喜劇",
   "the-crown":"歷史", "dark":"科幻", "peaky-blinders":"犯罪", "narcos":"犯罪",
   "rome":"歷史", "the-pacific":"歷史", "olive-kitteridge":"劇情", "unbelievable":"犯罪",
-  "friends":"喜劇", "er":"劇情", "buffy":"劇情", "the-good-wife":"政治",
+  "friends":"喜劇", "er":"劇情", "buffy":"劇情", "the-good-wife":"政治", "person-of-interest":"科幻",
 };
 export const categoryOf = (show: Show): Category => {
   if (categoryByShow[show.id]) return categoryByShow[show.id];

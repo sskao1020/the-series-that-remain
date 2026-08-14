@@ -6,9 +6,10 @@ const data = await readFile(new URL("../app/data/shows.ts", import.meta.url), "u
 const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
 const showBlock = data.slice(data.indexOf("export const shows"), data.indexOf("export const tiers"));
 
-test("formal catalog contains one hundred reviewed works", () => {
-  assert.equal([...showBlock.matchAll(/id:"[^"]+"/g)].length, 100);
-  assert.equal([...showBlock.matchAll(/expanded\(\{id:/g)].length, 58);
+test("formal catalog contains one hundred and one reviewed works", () => {
+  assert.equal([...showBlock.matchAll(/id:"[^"]+"/g)].length, 101);
+  assert.equal([...showBlock.matchAll(/expanded\(\{id:/g)].length, 59);
+  assert.match(showBlock, /id:"person-of-interest"/);
   assert.match(showBlock, /reviewedAt: "2026-08-11"/);
 });
 
