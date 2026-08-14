@@ -113,7 +113,7 @@ export default function Home() {
 </div>
 </div>
         <aside>
-<span>本次私人預覽</span>
+<span>目前收錄</span>
 <strong>{shows.length}</strong>
 <p>部作品完成編輯複核</p>
 <dl>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "時間留下的影集｜私人編輯預覽",
+  title: "時間留下的影集｜值得投入時間的完結影集",
   description: "為對熱門排行榜疲乏的觀眾，留下真正值得投入時間的完結影集。",
   icons: { icon: "/favicon.svg" },
 };
