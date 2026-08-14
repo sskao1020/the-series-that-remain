@@ -6,10 +6,14 @@ const data = await readFile(new URL("../app/data/shows.ts", import.meta.url), "u
 const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
 const showBlock = data.slice(data.indexOf("export const shows"), data.indexOf("export const tiers"));
 
-test("formal catalog contains one hundred and one reviewed works", () => {
-  assert.equal([...showBlock.matchAll(/id:"[^"]+"/g)].length, 101);
+test("formal catalog contains one hundred and fifty reviewed works", () => {
+  assert.equal([...showBlock.matchAll(/id:"[^"]+"/g)].length, 150);
   assert.equal([...showBlock.matchAll(/expanded\(\{id:/g)].length, 59);
+  assert.equal([...showBlock.matchAll(/researched\(\{id:/g)].length, 49);
   assert.match(showBlock, /id:"person-of-interest"/);
+  assert.match(showBlock, /id:"star-trek-deep-space-nine"/);
+  assert.match(showBlock, /id:"le-bureau-des-legendes"/);
+  assert.doesNotMatch(showBlock, /id:"hannibal"/);
   assert.match(showBlock, /reviewedAt: "2026-08-11"/);
 });
 
@@ -25,6 +29,7 @@ test("new interface rejects legacy scoring language", () => {
   assert.match(page, /先知道這些，再決定要不要看/);
   assert.match(page, /這些資料從哪裡來/);
   assert.match(page, /EDITORIAL BETA/);
+  assert.doesNotMatch(page, /<h4>重大獎項<\/h4>/);
 });
 
 test("catalog uses a small controlled category set", () => {

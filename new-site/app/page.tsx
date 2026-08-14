@@ -159,7 +159,7 @@ export default function Home() {
 <h1>時間之選</h1>
 <p>這裡不排第一名。作品依照影響與特色分成三層，讓你知道本站怎麼看它，也更容易找到想看的方向。</p>
 <div className="review-progress">
-<span style={{width:`${shows.length}%`}}/>
+<span style={{width:"100%"}}/>
 <b>目前 {shows.length} 部已複核 · 選庫持續增加中</b>
 </div>
 </div>
@@ -280,11 +280,7 @@ export default function Home() {
 <article>
 <h4>影評共識</h4>
 <p>{active.critics}</p>
-</article>{active.awards.length>0&&<article>
-<h4>重大獎項</h4>{active.awards.map(a=>
-<p className="award" key={a.year+a.name}>
-<time>{a.year}</time>
-<b>{a.organization}</b>{a.name}</p>)}</article>}</section>
+</article></section>
 <details>
 <summary>這些資料從哪裡來？</summary>
 <div className="sources">{active.sources.map(group=>
